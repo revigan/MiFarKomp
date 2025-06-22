@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kompresi File | MiFarKomp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style type="text/tailwindcss">
+      html {
+        scroll-behavior: smooth;
+      }
+      @layer components {
+        .btn-primary {
+          @apply w-full bg-primary text-white font-semibold py-3 px-6 rounded-lg transform transition-all duration-200 shadow-lg shadow-primary/30 hover:bg-primary-dark hover:shadow-xl hover:shadow-primary/40 focus:outline-none focus:ring-4 focus:ring-primary/50 disabled:bg-gray-300 disabled:shadow-none disabled:cursor-not-allowed;
+        }
+        .file-drop-area {
+          @apply flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer bg-gray-50/50 hover:bg-primary-light/30 transition-colors duration-300;
+        }
+        .compression-option {
+          @apply border border-gray-200 rounded-lg p-3 cursor-pointer transition-all duration-200 hover:border-primary;
+        }
+
+        /* General Layout */
+        .main-container {
+          @apply relative z-10 min-h-screen flex flex-col;
+        }
+        .main-content {
+          @apply flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8;
+        }
+        .content-wrapper {
+          @apply max-w-xl w-full;
+        }
+
+        /* Card */
+        .content-card {
+          @apply bg-white/70 backdrop-blur-xl border border-gray-200/50 rounded-2xl shadow-lg transition-all duration-300 animate-slide-up;
+        }
+        .card-body {
+          @apply p-8;
+        }
+        .card-header {
+          @apply text-center mb-8;
+        }
+        .card-title {
+          @apply text-3xl font-bold text-gray-900 tracking-tight;
+        }
+        .card-subtitle {
+          @apply text-gray-600 mt-2 max-w-md mx-auto;
+        }
+
+        /* Navbar */
+        .navbar {
+          @apply py-4 px-4 sm:px-6 lg:px-8 bg-white/70 backdrop-blur-xl border-b border-gray-200/50;
+        }
+        .navbar-content {
+          @apply max-w-4xl mx-auto flex justify-between items-center;
+        }
+        .logo-container {
+          @apply flex items-center space-x-3;
+        }
+        .logo-icon-wrapper {
+          @apply w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center border border-primary/20;
+        }
+        .logo-text {
+          @apply text-xl font-bold text-gray-800;
+        }
+        .nav-link {
+          @apply hidden md:inline-block px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary transition-colors;
+        }
+
+        /* Flash Messages */
+        .flash-message {
+          @apply mb-6 bg-red-50 border border-red-200 rounded-lg p-4 animate-fade-in;
+        }
+        .flash-message-content {
+          @apply flex items-start;
+        }
+        .flash-message-icon {
+          @apply w-5 h-5 text-red-500 mr-3 flex-shrink-0 mt-0.5;
+        }
+        .flash-message-text {
+          @apply text-red-800 font-medium;
+        }
+
+        /* Form Elements */
+        .form-section {
+          @apply mb-6;
+        }
+        .form-label {
+          @apply block text-sm font-semibold text-gray-800 mb-3 text-center;
+        }
+        .file-drop-content {
+          @apply flex flex-col items-center justify-center text-center p-4;
+        }
+        .file-drop-text {
+          @apply mb-2 text-sm text-gray-500;
+        }
+        .file-drop-link {
+          @apply font-semibold text-primary;
+        }
+        .file-drop-hint {
+          @apply text-xs text-gray-500;
+        }
+        .file-info-box {
+          @apply bg-white border border-gray-200 rounded-xl p-4;
+        }
+        .file-info-content {
+          @apply flex items-center space-x-3;
+        }
+        .file-icon-wrapper {
+          @apply w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0;
+        }
+        .file-info-text-wrapper {
+          @apply flex-1 min-w-0;
+        }
+        .file-name {
+          @apply font-semibold text-gray-800 truncate;
+        }
+        .file-size {
+          @apply text-sm text-gray-500;
+        }
+        .remove-file-btn {
+          @apply text-gray-400 hover:text-red-500 transition-colors flex-shrink-0;
+        }
+        .compression-grid {
+          @apply grid grid-cols-1 md:grid-cols-3 gap-3;
+        }
+        .compression-radio-label {
+          @apply relative;
+        }
+        .compression-title {
+          @apply font-semibold text-sm text-gray-900 text-center;
+        }
+        .compression-description {
+          @apply text-xs text-gray-500 text-center mt-1;
+        }
+
+        /* Loading State */
+        .loading-spinner {
+          @apply w-12 h-12 border-4 border-blue-200 border-t-primary rounded-full animate-spin;
+        }
+
+        /* Footer */
+        .footer {
+          @apply py-8 px-4 sm:px-6 lg:px-8 bg-white/70 backdrop-blur-xl border-t border-gray-200/50;
+        }
+        .footer-content {
+          @apply max-w-4xl mx-auto text-center text-sm text-gray-500;
+        }
+        .footer-credits {
+          @apply font-semibold text-gray-600 mb-1;
+        }
+      }
+
+      .animation-delay-2000 {
+        animation-delay: 2s;
+      }
+      .animation-delay-4000 {
+        animation-delay: 4s;
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ["Inter", "sans-serif"],
+            },
+            colors: {
+              primary: "#3B82F6",
+              "primary-light": "#DBEAFE",
+              "primary-dark": "#2563EB",
+            },
+            animation: {
+              "fade-in": "fadeIn 0.5s ease-in-out",
+              "slide-up": "slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+              blob: "blob 10s infinite",
+            },
+            keyframes: {
+              fadeIn: { from: { opacity: 0 }, to: { opacity: 1 } },
+              slideUp: {
+                from: { opacity: 0, transform: "translateY(30px)" },
+                to: { opacity: 1, transform: "translateY(0)" },
+              },
+              blob: {
+                "0%": { transform: "translate(0px, 0px) scale(1)" },
+                "33%": { transform: "translate(30px, -50px) scale(1.1)" },
+                "66%": { transform: "translate(-20px, 20px) scale(0.9)" },
+                "100%": { transform: "translate(0px, 0px) scale(1)" },
+              },
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="font-inter bg-gray-50 text-gray-800 antialiased min-h-screen relative overflow-x-hidden"
+  >
+    <!-- Main Container -->
+    <div class="main-container">
+      <!-- Navbar -->
+      <nav class="navbar">
+        <div class="navbar-content">
+          <div class="logo-container">
+            <div class="logo-icon-wrapper">
+              <i class="fa-solid fa-file-arrow-up text-primary text-2xl"></i>
+            </div>
+            <span class="logo-text">MiFarKomp</span>
+          </div>
+          <a href="{{ url_for('about') }}" class="nav-link">Tentang Kami</a>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="content-wrapper">
+          <div class="content-card">
+            <div class="card-body">
+              <!-- Header -->
+              <div class="card-header">
+                <h1 class="card-title">Kompresi File Jadi Mudah</h1>
+                <p class="card-subtitle">
+                  Unggah file Anda, pilih level kompresi, dan biarkan kami
+                  melakukan sisanya. Cepat, aman, dan efisien.
+                </p>
+              </div>
+
+              {% with messages = get_flashed_messages() %} {% if messages %}
+              <div class="flash-message">
+                <div class="flash-message-content">
+                  <i
+                    class="fa-solid fa-circle-xmark fa-lg text-red-500 mr-3 flex-shrink-0 mt-0.5"
+                  ></i>
+                  <span class="flash-message-text">{{ messages[0] }}</span>
+                </div>
+              </div>
+              {% endif %} {% endwith %}
+
+              <form method="post" enctype="multipart/form-data" id="uploadForm">
+                <!-- File Upload -->
+                <div class="form-section">
+                  <input
+                    type="file"
+                    id="fileInput"
+                    name="file"
+                    required
+                    class="hidden"
+                    accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.docx,.xlsx,.pptx"
+                  />
+                  <label
+                    for="fileInput"
+                    id="fileDropArea"
+                    class="file-drop-area"
+                  >
+                    <div id="drop-initial-state" class="file-drop-content">
+                      <i
+                        class="fa-solid fa-cloud-arrow-up text-4xl mb-3 text-gray-400"
+                      ></i>
+                      <p class="file-drop-text">
+                        <span class="file-drop-link">Klik untuk upload</span>
+                        atau seret file
+                      </p>
+                      <p class="file-drop-hint">
+                        JPG, PNG, PDF, DOCX, XLSX, PPTX
+                      </p>
+                    </div>
+                    <div
+                      id="drop-success-state"
+                      class="file-drop-content hidden"
+                    >
+                      <i
+                        class="fa-solid fa-circle-check text-4xl mb-3 text-green-500"
+                      ></i>
+                      <p class="text-sm font-semibold text-green-700">
+                        File berhasil dipilih!
+                      </p>
+                      <p class="text-xs text-gray-500 mt-1">
+                        Anda bisa mengganti file atau melanjutkan kompresi.
+                      </p>
+                    </div>
+                  </label>
+                </div>
+
+                <!-- File Info Display -->
+                <div id="fileInfo" class="hidden animate-fade-in form-section">
+                  <div class="file-info-box">
+                    <div class="file-info-content">
+                      <div id="fileIconContainer" class="file-icon-wrapper">
+                        <!-- Icon will be inserted by JS -->
+                      </div>
+                      <div class="file-info-text-wrapper">
+                        <h4 class="file-name" id="fileName">Nama File</h4>
+                        <p class="file-size" id="fileSize">Ukuran: 0 KB</p>
+                      </div>
+                      <button
+                        type="button"
+                        id="removeFile"
+                        title="Hapus file"
+                        class="remove-file-btn"
+                      >
+                        <i class="fa-solid fa-circle-xmark fa-lg"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Compression Level Selection -->
+                <div
+                  id="compressionLevel"
+                  class="form-section hidden animate-fade-in"
+                >
+                  <label class="form-label"> Pilih Tingkat Kompresi </label>
+                  <div class="compression-grid">
+                    <label class="compression-radio-label">
+                      <input
+                        type="radio"
+                        name="compression_level"
+                        value="small"
+                        class="sr-only"
+                      />
+                      <div class="compression-option">
+                        <h3 class="compression-title">Rendah</h3>
+                        <p class="compression-description">Kualitas Terbaik</p>
+                      </div>
+                    </label>
+                    <label class="compression-radio-label">
+                      <input
+                        type="radio"
+                        name="compression_level"
+                        value="medium"
+                        class="sr-only"
+                        checked
+                      />
+                      <div class="compression-option">
+                        <h3 class="compression-title">Sedang</h3>
+                        <p class="compression-description">Seimbang</p>
+                      </div>
+                    </label>
+                    <label class="compression-radio-label">
+                      <input
+                        type="radio"
+                        name="compression_level"
+                        value="large"
+                        class="sr-only"
+                      />
+                      <div class="compression-option">
+                        <h3 class="compression-title">Tinggi</h3>
+                        <p class="compression-description">Ukuran Terkecil</p>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button
+                  type="submit"
+                  id="submitBtn"
+                  disabled
+                  class="btn-primary"
+                >
+                  Upload & Kompresi
+                </button>
+              </form>
+
+              <!-- Loading State -->
+              <div
+                id="loadingState"
+                class="hidden text-center animate-fade-in py-10"
+              >
+                <i
+                  class="fa-solid fa-spinner fa-spin text-primary text-4xl"
+                ></i>
+                <h2 class="text-xl font-bold text-gray-800 mt-6">
+                  Sedang Mengkompresi...
+                </h2>
+                <p class="text-gray-600 mt-2">
+                  Mohon tunggu sejenak, file Anda sedang dioptimalkan.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-content">
+          <p class="footer-credits">
+            Dibuat oleh Mohammad Farikhin & Mikholas Andi Wijayanto
+          </p>
+          <p>&copy; 2025 MiFarKomp .</p>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      const fileInput = document.getElementById("fileInput");
+      const compressionLevel = document.getElementById("compressionLevel");
+      const submitBtn = document.getElementById("submitBtn");
+      const fileInfo = document.getElementById("fileInfo");
+      const fileName = document.getElementById("fileName");
+      const fileSize = document.getElementById("fileSize");
+      const removeFile = document.getElementById("removeFile");
+      const fileIconContainer = document.getElementById("fileIconContainer");
+      const fileDropArea = document.getElementById("fileDropArea");
+      const uploadForm = document.getElementById("uploadForm");
+      const cardHeader = document.querySelector(".card-header");
+      const flashMessages = document.querySelector(".flash-message");
+      const loadingState = document.getElementById("loadingState");
+      const dropInitialState = document.getElementById("drop-initial-state");
+      const dropSuccessState = document.getElementById("drop-success-state");
+
+      function formatFileSize(bytes) {
+        if (bytes === 0) return "0 Bytes";
+        const k = 1024;
+        const sizes = ["Bytes", "KB", "MB", "GB"];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+      }
+
+      const typeMap = {
+        image: {
+          icon: '<i class="fa-solid fa-file-image fa-2x text-blue-500"></i>',
+          bg: "bg-blue-100",
+        },
+        pdf: {
+          icon: '<i class="fa-solid fa-file-pdf fa-2x text-red-500"></i>',
+          bg: "bg-red-100",
+        },
+        docx: {
+          icon: '<i class="fa-solid fa-file-word fa-2x text-blue-600"></i>',
+          bg: "bg-blue-100",
+        },
+        xlsx: {
+          icon: '<i class="fa-solid fa-file-excel fa-2x text-green-600"></i>',
+          bg: "bg-green-100",
+        },
+        pptx: {
+          icon: '<i class="fa-solid fa-file-powerpoint fa-2x text-orange-500"></i>',
+          bg: "bg-orange-100",
+        },
+        unknown: {
+          icon: '<i class="fa-solid fa-file fa-2x text-gray-500"></i>',
+          bg: "bg-gray-100",
+        },
+      };
+
+      function getFileType(filename) {
+        const ext = filename.split(".").pop().toLowerCase();
+        if (["jpg", "jpeg", "png", "gif", "bmp"].includes(ext)) return "image";
+        if (["pdf", "docx", "xlsx", "pptx"].includes(ext)) return ext;
+        return "unknown";
+      }
+
+      function handleFile(file) {
+        if (!file) return;
+
+        fileName.textContent = file.name;
+        fileSize.textContent = `Ukuran: ${formatFileSize(file.size)}`;
+
+        const typeKey = getFileType(file.name);
+        const typeInfo = typeMap[typeKey];
+
+        fileIconContainer.innerHTML = typeInfo.icon;
+        fileIconContainer.className = `w-10 h-10 ${typeInfo.bg} rounded-lg flex items-center justify-center flex-shrink-0`;
+
+        // Show file info and controls
+        fileInfo.classList.remove("hidden");
+        compressionLevel.classList.remove("hidden");
+        submitBtn.disabled = false;
+
+        // Update drop area state
+        fileDropArea.classList.add("border-green-400", "bg-green-50/50");
+        dropInitialState.classList.add("hidden");
+        dropSuccessState.classList.remove("hidden");
+      }
+
+      fileInput.addEventListener("change", function () {
+        if (this.files.length > 0) {
+          handleFile(this.files[0]);
+        }
+      });
+
+      // Drag and drop
+      fileDropArea.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        fileDropArea.classList.add("bg-primary-light/50");
+      });
+      fileDropArea.addEventListener("dragleave", () => {
+        fileDropArea.classList.remove("bg-primary-light/50");
+      });
+      fileDropArea.addEventListener("drop", (e) => {
+        e.preventDefault();
+        fileDropArea.classList.remove("bg-primary-light/50");
+        if (e.dataTransfer.files.length > 0) {
+          fileInput.files = e.dataTransfer.files;
+          handleFile(e.dataTransfer.files[0]);
+        }
+      });
+
+      function hideFileInfo() {
+        // Hide file info and controls
+        fileInfo.classList.add("hidden");
+        compressionLevel.classList.add("hidden");
+        submitBtn.disabled = true;
+
+        // Restore drop area state
+        fileDropArea.classList.remove("border-green-400", "bg-green-50/50");
+        dropInitialState.classList.remove("hidden");
+        dropSuccessState.classList.add("hidden");
+      }
+
+      removeFile.addEventListener("click", function () {
+        fileInput.value = "";
+        hideFileInfo();
+      });
+
+      const compressionOptions = document.querySelectorAll(
+        ".compression-option"
+      );
+      const radioInputs = document.querySelectorAll(
+        'input[name="compression_level"]'
+      );
+
+      function updateCompressionSelection() {
+        radioInputs.forEach((input, index) => {
+          const optionDiv = compressionOptions[index];
+          if (input.checked) {
+            optionDiv.classList.add("border-primary", "bg-primary-light/50");
+            optionDiv.classList.remove("border-gray-200");
+          } else {
+            optionDiv.classList.remove("border-primary", "bg-primary-light/50");
+            optionDiv.classList.add("border-gray-200");
+          }
+        });
+      }
+
+      radioInputs.forEach((input) => {
+        input.addEventListener("change", updateCompressionSelection);
+      });
+
+      // Set default selection
+      document.querySelector('input[value="medium"]').checked = true;
+      updateCompressionSelection();
+
+      uploadForm.addEventListener("submit", function () {
+        if (fileInput.files.length > 0) {
+          if (cardHeader) cardHeader.classList.add("hidden");
+          if (flashMessages) flashMessages.classList.add("hidden");
+          uploadForm.classList.add("hidden");
+          loadingState.classList.remove("hidden");
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hasil Kompresi | MiFarKomp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style type="text/tailwindcss">
+      html {
+        scroll-behavior: smooth;
+      }
+      @layer components {
+        .btn-primary {
+          @apply w-full bg-primary text-white font-semibold py-3 px-6 rounded-lg transform transition-all duration-200 shadow-lg shadow-primary/30 hover:bg-primary-dark hover:shadow-xl hover:shadow-primary/40 focus:outline-none focus:ring-4 focus:ring-primary/50 disabled:bg-gray-300 disabled:shadow-none disabled:cursor-not-allowed;
+        }
+        .btn-secondary {
+          @apply w-full bg-white text-gray-700 font-semibold py-3 px-6 rounded-lg hover:bg-gray-100/50 border border-gray-300 transform transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-gray-200 flex items-center justify-center space-x-2;
+        }
+        .btn-icon {
+          @apply w-5 h-5;
+        }
+
+        /* General Layout */
+        .main-container {
+          @apply relative z-10 min-h-screen flex flex-col;
+        }
+        .main-content {
+          @apply flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8;
+        }
+        .content-wrapper {
+          @apply max-w-xl w-full;
+        }
+
+        /* Card */
+        .content-card {
+          @apply bg-white/70 backdrop-blur-xl border border-gray-200/50 rounded-2xl shadow-lg transition-all duration-300 animate-slide-up;
+        }
+        .card-body {
+          @apply p-8;
+        }
+
+        /* Navbar */
+        .navbar {
+          @apply py-4 px-4 sm:px-6 lg:px-8 bg-white/70 backdrop-blur-xl border-b border-gray-200/50;
+        }
+        .navbar-content {
+          @apply max-w-4xl mx-auto flex justify-between items-center;
+        }
+        .logo-container {
+          @apply flex items-center space-x-3;
+        }
+        .logo-icon-wrapper {
+          @apply w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center border border-primary/20;
+        }
+        .logo-text {
+          @apply text-xl font-bold text-gray-800;
+        }
+        .nav-link {
+          @apply hidden md:inline-block px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary transition-colors;
+        }
+
+        /* Result Page Specific */
+        .result-header {
+          @apply text-center mb-8 animate-scale-in;
+        }
+        .success-icon-wrapper {
+          @apply w-16 h-16 bg-success-light rounded-full flex items-center justify-center mx-auto mb-4 border-8 border-green-50;
+        }
+        .result-title {
+          @apply text-3xl font-bold text-gray-900 tracking-tight;
+        }
+        .result-subtitle {
+          @apply text-gray-600 mt-2;
+        }
+        .results-container {
+          @apply space-y-6 animate-fade-in;
+        }
+        .info-box {
+          @apply bg-white/80 border border-gray-200/80 rounded-xl p-4;
+        }
+        .info-box-title {
+          @apply text-sm font-medium text-gray-500 mb-2;
+        }
+        .info-box-subtitle {
+          @apply text-sm font-medium text-gray-500 mb-3;
+        }
+        .file-info-content {
+          @apply flex items-center space-x-3;
+        }
+        .file-icon-wrapper {
+          @apply w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0;
+        }
+        .file-info-text-wrapper {
+          @apply flex-1 min-w-0;
+        }
+        .file-name {
+          @apply font-semibold text-gray-800 truncate;
+        }
+        .file-size {
+          @apply text-sm text-gray-500;
+        }
+        .stats-grid {
+          @apply flex items-end justify-between space-x-4;
+        }
+        .stat-item {
+          @apply text-center;
+        }
+        .stat-value {
+          @apply text-2xl font-bold text-gray-800;
+        }
+        .stat-label {
+          @apply text-sm text-gray-500;
+        }
+        .stat-bar-wrapper {
+          @apply flex-1;
+        }
+        .stat-bar-background {
+          @apply w-full bg-gray-200 rounded-full h-2.5;
+        }
+        .stat-bar-foreground {
+          @apply bg-gradient-to-r from-green-400 to-blue-500 h-2.5 rounded-full;
+        }
+        .stat-value-success {
+          @apply text-2xl font-bold text-success;
+        }
+        .compression-level-info {
+          @apply text-center mt-3 pt-3 border-t border-gray-200;
+        }
+        .compression-level-text {
+          @apply text-xs font-medium text-gray-500;
+        }
+        .compression-level-value {
+          @apply font-bold capitalize text-primary;
+        }
+        .action-buttons-grid {
+          @apply grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4;
+        }
+        .error-title {
+          @apply text-2xl font-bold text-gray-800;
+        }
+        .error-text {
+          @apply text-gray-600 mt-2;
+        }
+        .btn-error-page {
+          @apply mt-6 inline-block bg-primary text-white font-semibold py-3 px-6 rounded-lg hover:bg-primary-dark transition-colors;
+        }
+
+        /* Footer */
+        .footer {
+          @apply py-8 px-4 sm:px-6 lg:px-8 bg-white/70 backdrop-blur-xl border-t border-gray-200/50;
+        }
+        .footer-content {
+          @apply max-w-4xl mx-auto text-center text-sm text-gray-500;
+        }
+        .footer-credits {
+          @apply font-semibold text-gray-600 mb-1;
+        }
+      }
+
+      .animation-delay-2000 {
+        animation-delay: 2s;
+      }
+      .animation-delay-4000 {
+        animation-delay: 4s;
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ["Inter", "sans-serif"],
+            },
+            colors: {
+              primary: "#3B82F6",
+              "primary-light": "#DBEAFE",
+              "primary-dark": "#2563EB",
+              success: "#027A48",
+              "success-light": "#D1FADF",
+            },
+            animation: {
+              "fade-in": "fadeIn 0.5s ease-in-out",
+              "slide-up": "slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+              blob: "blob 10s infinite",
+              "scale-in": "scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+            },
+            keyframes: {
+              fadeIn: { from: { opacity: 0 }, to: { opacity: 1 } },
+              slideUp: {
+                from: { opacity: 0, transform: "translateY(30px)" },
+                to: { opacity: 1, transform: "translateY(0)" },
+              },
+              scaleIn: {
+                from: { opacity: 0, transform: "scale(0.95)" },
+                to: { opacity: 1, transform: "scale(1)" },
+              },
+              blob: {
+                "0%": { transform: "translate(0px, 0px) scale(1)" },
+                "33%": { transform: "translate(30px, -50px) scale(1.1)" },
+                "66%": { transform: "translate(-20px, 20px) scale(0.9)" },
+                "100%": { transform: "translate(0px, 0px) scale(1)" },
+              },
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="font-inter bg-stone-50 text-gray-800 antialiased min-h-screen relative overflow-x-hidden"
+  >
+    <!-- Main Container -->
+    <div class="main-container">
+      <!-- Navbar -->
+      <nav class="navbar">
+        <div class="navbar-content">
+          <div class="logo-container">
+            <div class="logo-icon-wrapper">
+              <i class="fa-solid fa-file-arrow-up text-primary text-2xl"></i>
+            </div>
+            <span class="logo-text">MiFarKomp</span>
+          </div>
+          <a href="{{ url_for('about') }}" class="nav-link">Tentang Kami</a>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="content-wrapper">
+          <div class="content-card">
+            <div class="card-body">
+              {% if stats %}
+              <!-- Header -->
+              <div class="result-header">
+                <div class="success-icon-wrapper">
+                  <i
+                    class="fa-solid fa-circle-check text-green-600 text-4xl"
+                  ></i>
+                </div>
+                <h1 class="result-title">Kompresi Berhasil!</h1>
+                <p class="result-subtitle">
+                  File Anda telah dioptimalkan. Lihat hasilnya di bawah ini.
+                </p>
+              </div>
+
+              <!-- Results -->
+              <div class="results-container" style="animation-delay: 0.2s">
+                <!-- File Info -->
+                <div class="info-box">
+                  <p class="info-box-title">File Asli</p>
+                  <div class="file-info-content">
+                    <div id="fileIconContainer" class="file-icon-wrapper">
+                      <!-- Icon will be inserted by JS -->
+                    </div>
+                    <div class="file-info-text-wrapper">
+                      <h4 class="file-name" id="fileName">
+                        {{ stats.original_filename }}
+                      </h4>
+                      <p class="file-size" id="fileSize">
+                        {{ (stats.size_before / 1024) | round(2) }} KB
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Compression Stats -->
+                <div class="info-box">
+                  <p class="info-box-subtitle">Hasil Kompresi</p>
+                  <div class="stats-grid">
+                    <div class="stat-item">
+                      <div class="stat-value">
+                        {{ (stats.size_after / 1024) | round(2) }}
+                      </div>
+                      <div class="stat-label">KB</div>
+                    </div>
+
+                    <div class="stat-bar-wrapper">
+                      <div class="stat-bar-background">
+                        <div
+                          id="compression-bar"
+                          class="stat-bar-foreground"
+                          data-width="{{ 100 - stats.ratio }}"
+                        ></div>
+                      </div>
+                    </div>
+
+                    <div class="stat-item">
+                      <div class="stat-value-success">-{{ stats.ratio }}%</div>
+                      <div class="stat-label">Ukuran</div>
+                    </div>
+                  </div>
+                  {% if stats.compression_level %}
+                  <div class="compression-level-info">
+                    <span class="compression-level-text"
+                      >Level Kompresi:
+                      <span class="compression-level-value"
+                        >{{ stats.compression_level }}</span
+                      >
+                    </span>
+                  </div>
+                  {% endif %}
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons-grid">
+                  <a
+                    href="{{ url_for('download') }}"
+                    download
+                    class="btn-primary flex items-center justify-center space-x-2"
+                  >
+                    <i class="fa-solid fa-download"></i>
+                    <span>Download File</span>
+                  </a>
+                  <a href="{{ url_for('index') }}" class="btn-secondary">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span>Kompresi Lagi</span>
+                  </a>
+                </div>
+              </div>
+
+              {% else %}
+              <div class="text-center">
+                <h2 class="error-title">Oops! Terjadi Kesalahan</h2>
+                <p class="error-text">
+                  Tidak ada data hasil kompresi untuk ditampilkan. Silakan
+                  kembali dan coba lagi.
+                </p>
+                <a href="{{ url_for('index') }}" class="btn-error-page">
+                  Kembali ke Halaman Utama
+                </a>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-content">
+          <p class="footer-credits">
+            Dibuat oleh Mohammad Farikhin & Mikholas Andi Wijayanto
+          </p>
+          <p>&copy; 2025 MiFarKomp. Ditenagai oleh Teknologi Canggih.</p>
+        </div>
+      </footer>
+    </div>
+
+    {% if stats %}
+    <script>
+      const typeMap = {
+        image: {
+          icon: '<i class="fa-solid fa-file-image fa-2x text-blue-500"></i>',
+          bg: "bg-blue-100",
+        },
+        pdf: {
+          icon: '<i class="fa-solid fa-file-pdf fa-2x text-red-500"></i>',
+          bg: "bg-red-100",
+        },
+        docx: {
+          icon: '<i class="fa-solid fa-file-word fa-2x text-blue-600"></i>',
+          bg: "bg-blue-100",
+        },
+        xlsx: {
+          icon: '<i class="fa-solid fa-file-excel fa-2x text-green-600"></i>',
+          bg: "bg-green-100",
+        },
+        pptx: {
+          icon: '<i class="fa-solid fa-file-powerpoint fa-2x text-orange-500"></i>',
+          bg: "bg-orange-100",
+        },
+        unknown: {
+          icon: '<i class="fa-solid fa-file fa-2x text-gray-500"></i>',
+          bg: "bg-gray-100",
+        },
+      };
+
+      function getFileType(filename) {
+        const ext = filename.split(".").pop().toLowerCase();
+        if (["jpg", "jpeg", "png", "gif", "bmp"].includes(ext)) return "image";
+        if (["pdf", "docx", "xlsx", "pptx"].includes(ext)) return ext;
+        return "unknown";
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const fileNameEl = document.getElementById("fileName");
+        const fileIconContainer = document.getElementById("fileIconContainer");
+
+        if (fileNameEl && fileIconContainer) {
+          const filename = fileNameEl.textContent.trim();
+          const typeKey = getFileType(filename);
+          const typeInfo = typeMap[typeKey];
+
+          fileIconContainer.innerHTML = typeInfo.icon;
+          fileIconContainer.className = `w-10 h-10 ${typeInfo.bg} rounded-lg flex items-center justify-center flex-shrink-0`;
+        }
+
+        const compressionBar = document.getElementById("compression-bar");
+        if (compressionBar) {
+          const width = compressionBar.dataset.width;
+          compressionBar.style.width = `${width}%`;
+        }
+      });
+    </script>
+    {% endif %}
+  </body>
+</html>

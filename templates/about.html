@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tentang Kami | MiFarKomp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style type="text/tailwindcss">
+      @layer components {
+        .navbar {
+          @apply py-4 px-4 sm:px-6 lg:px-8 bg-white/70 backdrop-blur-xl border-b border-gray-200/50 sticky top-0 z-50;
+        }
+        .navbar-content {
+          @apply max-w-4xl mx-auto flex justify-between items-center;
+        }
+        .logo-container {
+          @apply flex items-center space-x-3;
+        }
+        .logo-icon-wrapper {
+          @apply w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center border border-primary/20;
+        }
+        .logo-text {
+          @apply text-xl font-bold text-gray-800;
+        }
+        .nav-link {
+          @apply px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary transition-colors;
+        }
+        .nav-link-active {
+          @apply text-primary font-semibold;
+        }
+        .footer {
+          @apply py-8 px-4 sm:px-6 lg:px-8 bg-white/70 backdrop-blur-xl border-t border-gray-200/50;
+        }
+        .footer-content {
+          @apply max-w-4xl mx-auto text-center text-sm text-gray-500;
+        }
+        .footer-credits {
+          @apply font-semibold text-gray-600 mb-1;
+        }
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ["Inter", "sans-serif"],
+            },
+            colors: {
+              primary: "#3B82F6",
+              "primary-light": "#DBEAFE",
+              "primary-dark": "#2563EB",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="font-inter bg-stone-50 text-gray-800 antialiased">
+    <!-- Main Container -->
+    <div class="min-h-screen flex flex-col">
+      <!-- Navbar -->
+      <nav class="navbar">
+        <div class="navbar-content">
+          <a href="{{ url_for('index') }}" class="logo-container">
+            <div class="logo-icon-wrapper">
+              <i class="fa-solid fa-file-arrow-up text-primary text-2xl"></i>
+            </div>
+            <span class="logo-text">MiFarKomp</span>
+          </a>
+          <div>
+            <a href="{{ url_for('index') }}" class="nav-link">Kompresi</a>
+            <a href="{{ url_for('about') }}" class="nav-link nav-link-active"
+              >Tentang Kami</a
+            >
+          </div>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="flex-grow flex items-center justify-center py-12">
+        <!-- Simplified About Section -->
+        <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div
+            class="bg-white p-8 rounded-xl border border-gray-200 shadow-lg text-center"
+          >
+            <h1 class="text-3xl font-bold text-gray-900 tracking-tight">
+              Tentang MiFarKomp
+            </h1>
+            <div class="space-y-4 text-gray-600 mt-6">
+              <p>
+                <strong>MiFarKomp (Mikholas & Farikhin Kompresi)</strong> adalah
+                sebuah proyek aplikasi web yang dirancang untuk memudahkan
+                pengguna dalam mengkompresi berbagai jenis file secara online.
+              </p>
+              <p>
+                Aplikasi ini dibangun menggunakan Python (Flask) untuk backend
+                dan Tailwind CSS untuk antarmuka yang bersih dan responsif.
+              </p>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-gray-200">
+              <h2 class="text-xl font-semibold text-gray-800 mb-4">
+                Tim Pengembang
+              </h2>
+              <div
+                class="flex flex-col sm:flex-row justify-center items-center gap-8"
+              >
+                <!-- Profile 1 -->
+                <div class="text-center">
+                  <div
+                    class="w-20 h-20 rounded-full mx-auto mb-2 border-2 border-white shadow bg-primary/10 flex items-center justify-center"
+                  >
+                    <i class="fa-solid fa-user text-primary text-3xl"></i>
+                  </div>
+                  <h3 class="font-semibold text-gray-800">Mohammad Farikhin</h3>
+                  <p class="text-primary text-sm">Pengembang Backend</p>
+                </div>
+                <!-- Profile 2 -->
+                <div class="text-center">
+                  <div
+                    class="w-20 h-20 rounded-full mx-auto mb-2 border-2 border-white shadow bg-primary/10 flex items-center justify-center"
+                  >
+                    <i class="fa-solid fa-user text-primary text-3xl"></i>
+                  </div>
+                  <h3 class="font-semibold text-gray-800">
+                    Mikholas Andi Wijayanto
+                  </h3>
+                  <p class="text-primary text-sm">Desainer UI/UX & Frontend</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-content">
+          <p class="footer-credits">
+            Dibuat oleh Mohammad Farikhin & Mikholas Andi Wijayanto
+          </p>
+          <p>&copy; 2025 MiFarKomp .</p>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
