@@ -372,12 +372,6 @@ Kontribusi sangat diterima! Untuk berkontribusi:
 4. Push ke branch (`git push origin feature/AmazingFeature`)
 5. Buat Pull Request
 
-## 📞 Kontak
-
-Untuk pertanyaan atau dukungan:
-
-- Email: [email@example.com]
-- GitHub Issues: [Buat issue baru](https://github.com/username/MiFarKomp/issues)
 
 ---
 
